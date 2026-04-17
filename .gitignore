@@ -1,3 +1,5 @@
 venv/
+emotion_env/
 __pycache__/
 *.pyc
+.deepface/
