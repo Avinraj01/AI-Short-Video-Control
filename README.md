@@ -1,7 +1,6 @@
 # 🚀 NeuroReel AI
 
-![MasterHead](https://lh3.googleusercontent.com/pw/AP1GczNjx9bb_OraJDaYRTgXQrz3lf_KMypALvx5RPhGEkMSKWty8W2PqpiOR6U3KLqHFcfds6sgo_wwaZabPkZEkuQMePIhXlrwW5DsEA69aIeZ4Pp3xJDpdxqrx7VpiQZe8eSKzoflx3ww77HlONmACyi9=w1120-h640-s-no-gm?authuser=0) 
-
+![NeuroReel AI](assets/neuroreel.gif)
 
 
 
