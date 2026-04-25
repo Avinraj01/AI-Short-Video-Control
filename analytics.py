@@ -10,14 +10,11 @@ def generate_dashboard(data):
 
     total_time = sum(time_spent)
 
-    # 🔥 MOST WATCHED GENRE
     genre_count = {}
     for g in genres:
         genre_count[g] = genre_count.get(g, 0) + 1
-
     fav_genre = max(genre_count, key=genre_count.get)
 
-    # 🔥 OVERALL MOOD
     avg_happy = sum(happy)/len(happy)
     avg_neutral = sum(neutral)/len(neutral)
     avg_sad = sum(sad)/len(sad)
@@ -29,7 +26,7 @@ def generate_dashboard(data):
     else:
         mood = "😐 Neutral"
 
-    # 🔥 GRAPH
+    # GRAPH
     plt.figure()
     plt.plot(happy, label="Happy")
     plt.plot(neutral, label="Neutral")
@@ -38,7 +35,6 @@ def generate_dashboard(data):
     plt.title("Emotion Trend")
     plt.savefig("graph.png")
 
-    # 🔥 TABLE ROWS
     rows = ""
     for i, d in enumerate(data):
         rows += f"""
@@ -52,160 +48,289 @@ def generate_dashboard(data):
         </tr>
         """
 
-    # 🔥 PREMIUM HTML UI
     html = f"""
 <!DOCTYPE html>
 <html>
 <head>
-<title>AI Dashboard</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<title>NeuroReel AI</title>
 
 <style>
 
 body {{
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: white;
-    animation: fadeIn 1s ease-in;
+    margin:0;
+    font-family:Poppins;
+    background:black;
+    color:white;
 }}
 
-@keyframes fadeIn {{
-    from {{opacity:0; transform:translateY(20px)}}
-    to {{opacity:1; transform:translateY(0)}}
+/* 🔥 NAVBAR FIXED */
+.navbar {{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:black;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    z-index:100;
 }}
 
-.header {{
-    text-align: center;
-    font-size: 30px;
-    padding: 20px;
-    font-weight: bold;
+.nav-container {{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:flex-end;
+    gap:30px;
+    padding:15px 30px;
 }}
 
-.container {{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+.nav-container a {{
+    color:#00f2ff;
+    text-decoration:none;
+    font-weight:500;
 }}
 
-.card {{
-    background: rgba(255,255,255,0.08);
-    padding: 20px;
-    border-radius: 15px;
-    width: 220px;
-    text-align: center;
-    transition: 0.3s;
+/* HERO */
+.hero {{
+    height:200vh;
+    position:relative;
 }}
 
-.card:hover {{
-    transform: scale(1.08);
-    box-shadow: 0 0 25px #00f2ff;
+.video-container {{
+    position:sticky;
+    top:0;
+    height:100vh;
 }}
 
-.graph {{
-    text-align: center;
-    margin: 30px;
+.video-bg {{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0.8;
+    transform: translateY(-20px);
 }}
 
-.graph img {{
-    border-radius: 10px;
-    width: 400px;
+.hero-content {{
+    position:absolute;
+    bottom:40px;
+    left:50px;
+}}
+
+.big-text {{
+    font-size:80px;
+}}
+
+.desc {{
+    font-size:20px;
+}}
+
+.section {{
+    padding:100px;
+    text-align:center;
+}}
+
+#table {{
+    position:relative;
+}}
+
+#particleCanvas {{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+}}
+
+.table-content {{
+    position:relative;
+    z-index:2;
 }}
 
 table {{
-    width: 90%;
-    margin: auto;
-    border-collapse: collapse;
-    margin-bottom: 40px;
+    width:100%;
+    border-collapse:collapse;
 }}
 
-th, td {{
-    padding: 10px;
-    text-align: center;
+th,td {{
+    padding:8px;
 }}
 
 th {{
-    background: #ff416c;
+    background:#ff416c;
 }}
 
-tr:nth-child(even) {{
-    background: rgba(255,255,255,0.05);
-}}
+/* MOBILE */
+@media(max-width:768px){{
+.big-text{{font-size:40px}}
+.desc{{font-size:14px}}
+.hero-content{{left:20px}}
 
-tr:hover {{
-    background: rgba(255,255,255,0.1);
-    transition: 0.3s;
+.nav-container {{
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+}}
 }}
 
 </style>
-
 </head>
 
 <body>
 
-<div class="header">🚀 AI Shorts Dashboard</div>
-
-<div class="container">
-
-    <div class="card">
-        <h3>⏱ Total Time</h3>
-        <h2 id="time">{round(total_time,2)}</h2>
+<!-- 🔥 NAVBAR -->
+<div class="navbar">
+    <div class="nav-container">
+        <a href="#home">🏠 Home</a>
+        <a href="#analytics">📋 Analytics</a>
+        <a href="#graph">📈 Graph</a>
+        <a href="#table">📊 Charts</a>
     </div>
-
-    <div class="card">
-        <h3>🔥 Favorite Genre</h3>
-        <h2>{fav_genre}</h2>
-    </div>
-
-    <div class="card">
-        <h3>🧠 Mood</h3>
-        <h2>{mood}</h2>
-    </div>
-
 </div>
 
-<div class="graph">
-    <h2>Emotion Trend</h2>
-    <img src="graph.png">
+<section class="hero" id="home">
+
+<div class="video-container">
+<video id="bgVideo" class="video-bg" muted>
+<source src="assets/Hero_Page_Bg.mp4" type="video/mp4">
+</video>
 </div>
 
-<h2 style="text-align:center;">📋 Reel Data</h2>
+<div class="hero-content">
+<div class="big-text">NeuroReel-AI</div>
+<div class="desc">
+AI-powered Hands-Free Short Videos<br>
+Controller with real-time analytics
+</div>
+</div>
 
+</section>
+
+<section class="section" id="analytics">
+<h2>Analytics</h2>
+<p>Time: {round(total_time,2)}</p>
+<p>Genre: {fav_genre}</p>
+<p>Mood: {mood}</p>
+</section>
+
+<section class="section" id="graph">
+<h2>Emotion Trend</h2>
+<img src="graph.png">
+</section>
+
+<section class="section" id="table">
+<canvas id="particleCanvas"></canvas>
+
+<div class="table-content">
+<h2>Charts</h2>
 <table>
 <tr>
-<th>Reel</th>
-<th>Genre</th>
-<th>Time</th>
-<th>Happy</th>
-<th>Neutral</th>
-<th>Sad</th>
+<th>Reel</th><th>Genre</th><th>Time</th><th>Happy</th><th>Neutral</th><th>Sad</th>
 </tr>
 {rows}
 </table>
+</div>
+</section>
 
-<!-- 🔥 COUNT ANIMATION -->
 <script>
-let el = document.getElementById("time");
-let final = parseFloat(el.innerText);
-let current = 0;
 
-let interval = setInterval(() => {{
-    current += final/50;
-    if(current >= final) {{
-        current = final;
-        clearInterval(interval);
+// 🎬 SCROLL VIDEO LIMIT
+const video = document.getElementById("bgVideo");
+const hero = document.getElementById("home");
+
+window.addEventListener("scroll", () => {{
+    let rect = hero.getBoundingClientRect();
+    let progress = Math.min(Math.max(-rect.top / (hero.offsetHeight - window.innerHeight), 0), 1);
+
+    if(video.duration){{
+        let maxTime = Math.min(3.8, video.duration);
+        video.currentTime = maxTime * progress;
     }}
-    el.innerText = current.toFixed(1);
-}}, 20);
+}});
+
+// 🔥 PARTICLES
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){{
+    canvas.width = window.innerWidth;
+    canvas.height = document.getElementById("table").offsetHeight;
+}}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let mouse = {{x:null,y:null}};
+document.getElementById("table").addEventListener("mousemove", e => {{
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+}});
+
+let particles = [];
+
+class Particle {{
+    constructor(){{
+        this.x = Math.random()*canvas.width;
+        this.y = Math.random()*canvas.height;
+        this.vx = Math.random()-0.5;
+        this.vy = Math.random()-0.5;
+    }}
+
+    update(){{
+        this.x += this.vx;
+        this.y += this.vy;
+
+        let dx = this.x - mouse.x;
+        let dy = this.y - mouse.y;
+        let dist = Math.sqrt(dx*dx+dy*dy);
+
+        if(dist < 120){{
+            this.x += dx/20;
+            this.y += dy/20;
+        }}
+    }}
+
+    draw(){{
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,2,0,Math.PI*2);
+        ctx.fillStyle = "#00f2ff";
+        ctx.fill();
+    }}
+}}
+
+for(let i=0;i<120;i++) particles.push(new Particle());
+
+function connect(){{
+    for(let i=0;i<particles.length;i++){{
+        for(let j=i;j<particles.length;j++){{
+            let dx = particles[i].x - particles[j].x;
+            let dy = particles[i].y - particles[j].y;
+            let dist = Math.sqrt(dx*dx+dy*dy);
+
+            if(dist < 100){{
+                ctx.strokeStyle = "rgba(0,242,255,0.1)";
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x,particles[i].y);
+                ctx.lineTo(particles[j].x,particles[j].y);
+                ctx.stroke();
+            }}
+        }}
+    }}
+}}
+
+function animate(){{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{{p.update();p.draw();}});
+    connect();
+    requestAnimationFrame(animate);
+}}
+
+animate();
+
 </script>
 
 </body>
 </html>
 """
 
-    with open("dashboard.html", "w") as f:
+    with open("dashboard.html","w") as f:
         f.write(html)
 
-    print("🔥 Premium Dashboard Ready: dashboard.html")
+    print("🔥 NAVBAR PERFECTLY FIXED (NO CUT, CLEAN ALIGN)")

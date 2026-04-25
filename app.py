@@ -115,7 +115,7 @@ while True:
                 pyautogui.press("space")
 
                 # 🔥 CRITICAL LINE
-                continue   # 👈 यही main fix है
+                continue   
 
             # 👤 HEAD CONTROL (only if NO blink)
             nose = face.landmark[1]
