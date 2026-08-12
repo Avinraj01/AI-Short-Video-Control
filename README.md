@@ -1,4 +1,4 @@
-# 🧠 NeuroReel AI
+# 🧠 NeuroReel-AI
 
 > 🚀 AI-powered **Hands-Free YouTube Shorts Controller** with real-time analytics
 > Built using **Computer Vision + AI + OCR + Emotion Tracking**
